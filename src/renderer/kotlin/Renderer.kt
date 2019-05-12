@@ -1,5 +1,9 @@
-import components.HelloWorld
+import components.WatchlistComponent
+import services.DataRepository
+import services.WatchlistService
 
 fun main() {
-    kui.mountComponent("app", HelloWorld())
+    val data = DataRepository()
+    val service = WatchlistService(data)
+    kui.mountComponent("app", WatchlistComponent(service))
 }

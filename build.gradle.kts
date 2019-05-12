@@ -1,14 +1,26 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.3.31")
+    }
+}
+
 plugins {
     id("kotlin2js") version "1.3.31"
     id("com.moowork.node") version "1.3.1"
 }
 
+apply(plugin = "kotlinx-serialization")
+
 version = "1.0-SNAPSHOT"
 
 repositories {
+    maven("https://kotlin.bintray.com/kotlinx")
     mavenCentral()
     maven("https://juggernaut0.github.io/m2/repository")
 }
@@ -24,6 +36,7 @@ dependencies {
 
     "rendererImplementation"(kotlin("stdlib-js"))
     "rendererImplementation"("com.github.juggernaut0.kui:kui:0.5.0")
+    "rendererImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
 }
 
 tasks {
