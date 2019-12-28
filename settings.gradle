@@ -8,4 +8,9 @@ pluginManagement {
     }
 }
 rootProject.name = 'watchlist'
-
+include 'common'
+include 'dbmigrate'
+include 'electron'
+include 'service'
+include 'ui'
+include 'web'

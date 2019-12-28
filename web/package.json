@@ -1,9 +1,9 @@
 {
-  "jest": {
-    "testRegex": "_test\\.js$"
+  "scripts": {
+    "webpack": "webpack",
+    "webpackMin": "webpack --mode=production"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
   }
