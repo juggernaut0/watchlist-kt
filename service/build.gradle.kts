@@ -5,6 +5,7 @@ plugins {
     java
     application
     id("nu.studer.jooq").version("4.0")
+    kotlin("kapt")
 }
 
 dependencies {
@@ -16,11 +17,11 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
-    implementation("io.ktor:ktor-html-builder:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.12")
-
-    implementation("com.google.inject:guice:4.2.2:no_aop")
+    val daggerVersion = "2.25.4"
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
@@ -28,6 +29,10 @@ dependencies {
     implementation("org.jooq:jooq:3.12.3")
     jooqRuntime("org.postgresql:postgresql:42.2.5")
     implementation("com.zaxxer:HikariCP:3.2.0")
+
+    implementation("io.github.config4k:config4k:0.4.1")
+
+    implementation("dev.twarner.auth:auth-common:1-SNAPSHOT")
 
     testImplementation(kotlin("test-junit"))
 }
@@ -57,6 +62,10 @@ tasks {
     }
 
     getByName("classes").dependsOn(copyWeb)
+
+    val run by getting(JavaExec::class) {
+        systemProperty("config.file", "local.conf")
+    }
 }
 
 

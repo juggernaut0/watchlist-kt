@@ -1,5 +1,5 @@
 plugins {
-    id("kotlin2js") version "1.3.61" apply false
+    kotlin("jvm") version "1.3.61" apply false
     id("com.moowork.node") version "1.2.0"
 }
 

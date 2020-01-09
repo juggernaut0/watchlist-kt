@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization").version("1.3.61")
-    id("com.moowork.node")
+    //id("com.moowork.node")
 }
 
 kotlin {
@@ -12,23 +12,25 @@ kotlin {
     js()
 
     sourceSets {
+        val multiplatformUtilsVersion = "0.2.0-SNAPSHOT"
+
         val commonMain by getting {
             dependencies {
-                implementation("com.github.juggernaut0:multiplatform-utils-metadata:0.1.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.14.0")
+                api("com.github.juggernaut0:multiplatform-utils:$multiplatformUtilsVersion")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.14.0")
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                api("com.github.juggernaut0:multiplatform-utils-jvm:0.1.0")
+                api("com.github.juggernaut0:multiplatform-utils-jvm:$multiplatformUtilsVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                api("com.github.juggernaut0:multiplatform-utils-js:0.1.0")
+                api("com.github.juggernaut0:multiplatform-utils-js:$multiplatformUtilsVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.14.0")
             }
         }
@@ -45,7 +47,7 @@ tasks.withType<Kotlin2JsCompile>().forEach {
     it.kotlinOptions.moduleKind = "umd"
 }
 
-tasks {
+/*tasks {
     val populateNodeModules by registering(Copy::class) {
         dependsOn("compileKotlinJs")
 
@@ -66,4 +68,4 @@ tasks {
 
     getByName("jsTest").dependsOn(runJest)
     getByName("npmInstall").enabled = false
-}
+}*/
