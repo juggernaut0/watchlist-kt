@@ -5,7 +5,7 @@ import kui.componentOf
 import kui.renderOnSet
 
 object WatchlistApp : Component() {
-    private var state: Component by renderOnSet(componentOf {  })
+    var state: Component by renderOnSet(componentOf {  })
 
     override fun render() {
         markup().component(state)

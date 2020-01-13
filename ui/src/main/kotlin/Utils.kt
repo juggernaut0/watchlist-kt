@@ -1,0 +1,1 @@
+fun String.toDisplay(): String = toLowerCase().capitalize().replace('_', ' ')
