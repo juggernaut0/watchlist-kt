@@ -13,6 +13,8 @@ private const val col10 = "${1000.0/12}%"
 private const val borderGray = "#ccc"
 private const val btnColor = "#2a4"
 private const val btnHoverColor = "#183"
+private const val btnDangerColor = "#d33"
+private const val btnDangerHoverColor = "#c22"
 
 private const val css = """
 .watchlist-container {
@@ -115,6 +117,7 @@ textarea.watchlist-input {
     border: 0;
     border-radius: 0.25rem;
     margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
     font-size: 1rem;
 }
 
@@ -183,6 +186,14 @@ button.watchlist-score-btn {
 
 .watchlist-list-table-tags {
     display: none;
+}
+
+.watchlist-list-delete-btn {
+    background-color: $btnDangerColor;
+}
+
+.watchlist-list-delete-btn:hover {
+    background-color: $btnDangerHoverColor;
 }
 
 @media only screen and (min-width: 600px) {

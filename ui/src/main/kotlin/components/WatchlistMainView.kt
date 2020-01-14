@@ -55,7 +55,7 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
                 }
                 div(classes("watchlist-list-table")) {
                     for (item in selectedCategory.items) {
-                        component(WatchlistRow(item))
+                        component(WatchlistRow(item, removeItem = { selectedCategory.items.remove(item); render() }))
                     }
                 }
                 div(classes("watchlist-list-table-row-box")) {
