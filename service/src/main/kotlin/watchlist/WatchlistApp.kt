@@ -34,9 +34,6 @@ class WatchlistApp @Inject constructor(
             }
             install(StatusPages) {
                 installWebApplicationExceptionHandler()
-                exception<NotImplementedError> {
-                    call.respond(HttpStatusCode.NotImplemented, it.message.toString())
-                }
             }
             install(Authentication) {
                 token(httpClient = authClient)

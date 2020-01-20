@@ -21,6 +21,10 @@ data class MutableWatchlistItem(
     var notes: String
 )
 
-fun MutableWatchlist.toApi(): Watchlist = Watchlist(categories.map { it.toApi() })
+fun MutableWatchlist.toApi(timestamp: Long): Watchlist = Watchlist(categories.map { it.toApi() }, timestamp)
 fun MutableCategory.toApi(): Category = Category(name, items.map { it.toApi() })
 fun MutableWatchlistItem.toApi(): WatchlistItem = WatchlistItem(name, score, status, tags, notes)
+
+fun Watchlist.toMutable(): MutableWatchlist = MutableWatchlist(categories.mapTo(mutableListOf()) { it.toMutable() })
+fun Category.toMutable(): MutableCategory = MutableCategory(name, items.mapTo(mutableListOf()) { it.toMutable() })
+fun WatchlistItem.toMutable(): MutableWatchlistItem = MutableWatchlistItem(name, score, status, tags.toMutableList(), notes)

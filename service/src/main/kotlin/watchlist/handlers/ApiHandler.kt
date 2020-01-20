@@ -1,7 +1,9 @@
 package watchlist.handlers
 
 import io.ktor.auth.authenticate
+import io.ktor.http.HttpStatusCode
 import io.ktor.routing.Route
+import juggernaut0.multiplatform.ktor.WebApplicationException
 import juggernaut0.multiplatform.ktor.handleApi
 import watchlist.api.v1.Watchlist
 import watchlist.api.v1.getListByName
@@ -22,4 +24,8 @@ class ApiHandler @Inject constructor() {
     fun getMyList(auth: ValidatedToken): Watchlist {
         TODO()
     }
+}
+
+private fun TODO(): Nothing {
+    throw WebApplicationException(HttpStatusCode.NotImplemented)
 }

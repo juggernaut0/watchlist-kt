@@ -4,9 +4,14 @@ import kui.Component
 import kui.Props
 import kui.classes
 import services.MutableWatchlistItem
+import services.WatchlistService
 import toDisplay
 
-class WatchlistRow(private val item: MutableWatchlistItem, private val removeItem: () -> Unit) : Component() {
+class WatchlistRow(
+    private val item: MutableWatchlistItem,
+    private val service: WatchlistService,
+    private val removeItem: () -> Unit
+) : Component() {
     private val collapse = Collapse()
 
     override fun render() {
@@ -28,7 +33,7 @@ class WatchlistRow(private val item: MutableWatchlistItem, private val removeIte
             }
             component(collapse) {
                 slot(Collapse.Slot) {
-                    component(ItemEditor(item, onChange = { render() }))
+                    component(ItemEditor(item, onChange = { service.save(); render() }))
                     button(Props(
                         classes = listOf("watchlist-btn", "watchlist-list-delete-btn"),
                         click = { removeItem() }

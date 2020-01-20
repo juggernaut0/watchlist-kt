@@ -4,7 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Watchlist(
-        val categories: List<Category>
+        val categories: List<Category>,
+        val timestamp: Long
 )
 
 @Serializable

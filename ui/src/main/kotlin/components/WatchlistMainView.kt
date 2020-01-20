@@ -19,7 +19,14 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
 
     private fun addItem() {
         selectedCategory.items.add(newItem)
+        service.save()
         newItem = resetItem()
+        render()
+    }
+
+    private fun removeItem(item: MutableWatchlistItem) {
+        selectedCategory.items.remove(item)
+        service.save()
         render()
     }
 
@@ -55,7 +62,7 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
                 }
                 div(classes("watchlist-list-table")) {
                     for (item in selectedCategory.items) {
-                        component(WatchlistRow(item, removeItem = { selectedCategory.items.remove(item); render() }))
+                        component(WatchlistRow(item, service, removeItem = { removeItem(item) }))
                     }
                 }
                 div(classes("watchlist-list-table-row-box")) {

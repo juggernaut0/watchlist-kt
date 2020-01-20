@@ -12,6 +12,9 @@ import io.ktor.http.URLProtocol
 import juggernaut0.multiplatform.ktor.JsonSerialization
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import services.CompositeDataRepository
+import services.HttpDataRepository
+import services.LocalStorageDataRepository
 import services.WatchlistService
 import kotlin.browser.document
 import kotlin.browser.window
@@ -19,8 +22,24 @@ import kotlin.browser.window
 fun main() {
     AuthPanel.Styles.apply()
     applyWatchlistStyles()
-    //kui.mountComponent(document.body!!, if (getToken() == null) AuthPanel(httpClient) else HelloWorld())
-    val service = WatchlistService()
-    WatchlistApp.state = WatchlistMainView(service)
+    val json = Json(JsonConfiguration.Stable, context = authModule)
+    val httpClient = HttpClient(Js) {
+        defaultRequest {
+            url.protocol = URLProtocol.createOrDefault(window.location.protocol.trim(':'))
+            url.host = window.location.hostname
+            window.location.port.toIntOrNull()?.let {
+                url.port = it
+            }
+            getToken()?.let { token -> headers.append(HttpHeaders.Authorization, "Bearer $token") }
+        }
+        install(JsonSerialization) {
+            this.json = json
+        }
+    }
+    val dataRepo = CompositeDataRepository(
+        LocalStorageDataRepository(json),
+        HttpDataRepository(httpClient)
+    )
+    WatchlistService(dataRepo).init { WatchlistApp.state = WatchlistMainView(it) }
     kui.mountComponent(document.body!!, WatchlistApp)
 }

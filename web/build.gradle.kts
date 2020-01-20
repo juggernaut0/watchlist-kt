@@ -9,8 +9,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":ui"))
-    implementation(kotlin("stdlib-js"))
+    compile(project(":common"))
+    compile(project(":ui"))
+    compile(kotlin("stdlib-js"))
 }
 
 tasks.withType<Kotlin2JsCompile>().forEach {

@@ -11,6 +11,8 @@ import io.ktor.http.headersOf
 import io.ktor.response.respond
 import juggernaut0.multiplatform.ktor.callApi
 import org.slf4j.LoggerFactory
+import java.lang.Exception
+import java.net.ConnectException
 import java.util.*
 
 class ValidatedToken(val userId: UUID): Principal
@@ -44,8 +46,11 @@ class TokenAuthProvider(private val configuration: Configuration) : Authenticati
     suspend fun validate(token: String): ValidatedToken? {
         val id = try {
             configuration.httpClient.callApi(auth.api.v1.validate, Unit, headers = headersOf(HttpHeaders.Authorization, "Bearer $token"))
-        } catch (e: ClientRequestException) {
-            log.warn("Failed to validate token", e)
+        } catch (e: Exception) {
+            when (e) {
+                is ClientRequestException, is ConnectException -> log.warn("Failed to validate token", e)
+                else -> log.error("Failed to validate token", e)
+            }
             return null
         }
         return ValidatedToken(id)
@@ -56,8 +61,6 @@ class TokenAuthProvider(private val configuration: Configuration) : Authenticati
             return TokenAuthProvider(this)
         }
     }
-
-    companion object {
-        private val log = LoggerFactory.getLogger(TokenAuthProvider::class.java)
-    }
 }
+
+private val log = LoggerFactory.getLogger(TokenAuthProvider::class.java)
