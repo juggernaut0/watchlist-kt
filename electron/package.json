@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "start": "electron build/dist"
+    "start": "electron build/dist",
+    "package": "electron-packager build/dist --out=build/package --overwrite"
   },
   "devDependencies": {
-    "electron": "^5.0.1"
+    "electron": "^5.0.1",
+    "electron-packager": "14.2"
   }
 }

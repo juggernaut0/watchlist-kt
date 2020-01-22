@@ -14,4 +14,6 @@ external class BrowserWindow(options: dynamic) {
 
     fun loadFile(path: String)
     fun openDevTools()
+
+    fun setMenuBarVisibility(visibile: Boolean)
 }

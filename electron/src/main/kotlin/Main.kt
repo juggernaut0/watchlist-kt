@@ -4,15 +4,16 @@ private var mainWindow: BrowserWindow? = null
 
 private fun createWindow() {
     mainWindow = BrowserWindow(object {
-        //val width = 800
-        //val height = 600
+        val width = 1280
+        val height = 720
         //val frame = false
         val webPreferences = object {
             val nodeIntegration = true
         }
     }).apply {
         loadFile("index.html")
-        openDevTools()
+        //openDevTools()
+        setMenuBarVisibility(false)
 
         on("closed") { mainWindow = null }
     }

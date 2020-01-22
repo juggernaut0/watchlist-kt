@@ -21,6 +21,7 @@ private const val css = """
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    box-sizing: border-box;
     border: 1px solid $borderGray;
     border-radius: 0.5rem;
     background-color: #f7f7f7;

@@ -41,7 +41,7 @@ tasks {
         }
         include("**/*.js")
         includeEmptyDirs = false
-        into("$buildDir/node_modules")
+        into("$buildDir/dist/node_modules")
     }
 
     val assembleScripts by registering(Copy::class) {
@@ -56,7 +56,7 @@ tasks {
     val generatePackageJson by registering {
         outputs.files("$buildDir/dist/package.json")
         doLast {
-            File("$buildDir/dist/package.json").writeText("{\"main\": \"electron.js\"}\n")
+            File("$buildDir/dist/package.json").writeText("{\"productName\": \"watchlist\", \"main\": \"electron.js\"}\n")
         }
     }
 
@@ -65,5 +65,10 @@ tasks {
     val run by registering(NpmTask::class) {
         dependsOn("assemble")
         setArgs(listOf("run", "start"))
+    }
+
+    val `package` by registering(NpmTask::class) {
+        dependsOn("assemble")
+        setArgs(listOf("run", "package"))
     }
 }
