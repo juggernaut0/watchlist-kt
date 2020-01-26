@@ -1,5 +1,9 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+version = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 
 plugins {
     id("kotlin2js")
@@ -56,7 +60,13 @@ tasks {
     val generatePackageJson by registering {
         outputs.files("$buildDir/dist/package.json")
         doLast {
-            File("$buildDir/dist/package.json").writeText("{\"productName\": \"watchlist\", \"main\": \"electron.js\"}\n")
+            File("$buildDir/dist/package.json").writeText("""
+                {
+                    "name": "watchlist",
+                    "version": "$version", 
+                    "main": "electron.js"
+                }
+            """.trimIndent() + "\n")
         }
     }
 

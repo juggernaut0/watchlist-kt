@@ -19,7 +19,7 @@ class WatchlistRow(
             div(Props(classes = listOf("watchlist-list-table-row"), click = { collapse.toggle() })) {
                 span(classes("watchlist-list-table-name")) { +item.name }
                 span(classes("watchlist-list-table-status")) { +item.status.toDisplay() }
-                span(classes("watchlist-list-table-score")) {
+                span(classes("watchlist-list-table-score", "watchlist-list-table-score-btns")) {
                     item.score?.let { score ->
                         for (i in 1..5) {
                             val classes = listOfNotNull(

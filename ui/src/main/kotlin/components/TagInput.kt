@@ -12,12 +12,18 @@ class TagInput(private val tags: MutableList<String>, private val onChange: (() 
         onChange?.invoke()
     }
 
-    private fun onKeyUp(eventArgs: KeyboardEventArgs) {
-        if (eventArgs.key == "Enter") {
+    private fun addTag() {
+        if (newValue.isNotBlank()) {
             tags.add(newValue)
             newValue = ""
             render()
             onChange?.invoke()
+        }
+    }
+
+    private fun onKeyUp(eventArgs: KeyboardEventArgs) {
+        if (eventArgs.key == "Enter") {
+            addTag()
         } else if(eventArgs.key == "Backspace" && newValue.isEmpty()) {
             tags.removeAt(tags.lastIndex)
             render()
@@ -36,7 +42,8 @@ class TagInput(private val tags: MutableList<String>, private val onChange: (() 
             inputText(Props(
                 classes = listOf("taginput-input"),
                 ref = inputRef,
-                keyup = { onKeyUp(it) }
+                keyup = { onKeyUp(it) },
+                blur = { addTag() }
             ), model = ::newValue)
         }
     }

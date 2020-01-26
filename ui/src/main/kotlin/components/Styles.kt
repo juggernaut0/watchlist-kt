@@ -185,6 +185,10 @@ button.watchlist-score-btn {
     display: none;
 }
 
+.watchlist-list-table-score-btns {
+    line-height: 0; /*fixes issue in electron*/
+}
+
 .watchlist-list-table-tags {
     display: none;
 }
