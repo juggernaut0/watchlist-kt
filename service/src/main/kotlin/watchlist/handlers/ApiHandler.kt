@@ -1,5 +1,6 @@
 package watchlist.handlers
 
+import auth.ValidatedToken
 import io.ktor.auth.authenticate
 import io.ktor.http.HttpStatusCode
 import io.ktor.routing.Route
@@ -9,7 +10,6 @@ import watchlist.api.v1.Watchlist
 import watchlist.api.v1.getListByName
 import watchlist.api.v1.getMyList
 import watchlist.api.v1.saveMyList
-import watchlist.auth.ValidatedToken
 import javax.inject.Inject
 
 fun Route.registerRoutes(handler: ApiHandler) {

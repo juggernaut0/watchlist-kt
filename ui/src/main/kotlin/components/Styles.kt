@@ -17,6 +17,17 @@ private const val btnDangerColor = "#d33"
 private const val btnDangerHoverColor = "#c22"
 
 private const val css = """
+.watchlist-wrapper {
+    width: 100%;
+    font-family: "Segoe UI",Roboto,sans-serif;
+    color: #222;
+}
+
+.watchlist-nav {
+    display: flex;
+    justify-content: space-between;
+}
+
 .watchlist-container {
     display: flex;
     flex-wrap: wrap;
@@ -275,7 +286,7 @@ button.watchlist-score-btn {
 }
 
 @media only screen and (min-width: 1500px) {
-    .watchlist-container {
+    .watchlist-wrapper {
         width: 1400px;
         margin: 0 auto;
     }

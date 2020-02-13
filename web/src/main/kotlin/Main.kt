@@ -3,6 +3,7 @@ import auth.api.v1.authModule
 import auth.getToken
 import components.WatchlistApp
 import components.WatchlistMainView
+import components.WebWrapper
 import components.applyWatchlistStyles
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
@@ -40,6 +41,6 @@ fun main() {
         LocalStorageDataRepository(json),
         HttpDataRepository(httpClient)
     )
-    WatchlistService(dataRepo).init { WatchlistApp.state = WatchlistMainView(it) }
+    WatchlistService(dataRepo).init { WatchlistApp.state = WebWrapper(it, httpClient) }
     kui.mountComponent(document.body!!, WatchlistApp)
 }

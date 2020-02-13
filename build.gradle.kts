@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.3.61" apply false
-    id("com.moowork.node") version "1.2.0"
+    id("com.github.node-gradle.node") version "2.2.1"
 }
 
 version = "1.0-SNAPSHOT"
@@ -12,5 +12,12 @@ subprojects {
         jcenter()
         maven("https://juggernaut0.github.io/m2/repository")
         mavenLocal()
+    }
+
+    plugins.withId("com.github.node-gradle.node") {
+        this@subprojects.node {
+            download = true
+            version = "12.16.0"
+        }
     }
 }

@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 plugins {
     kotlin("js")
     id("kotlin-dce-js")
-    id("com.moowork.node")
+    id("com.github.node-gradle.node")
 }
 
 dependencies {
@@ -30,12 +30,12 @@ tasks {
     }
 
     val webpack by registering(NpmTask::class) {
-        dependsOn(populateNodeModules)
+        dependsOn(populateNodeModules, npmInstall)
         setArgs(listOf("run", "webpack"))
     }
 
     val webpackMin by registering(NpmTask::class) {
-        dependsOn(populateNodeModules)
+        dependsOn(populateNodeModules, npmInstall)
         setArgs(listOf("run", "webpackMin"))
     }
 }

@@ -7,7 +7,7 @@ version = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 
 plugins {
     id("kotlin2js")
-    id("com.moowork.node")
+    id("com.github.node-gradle.node")
 }
 
 sourceSets {

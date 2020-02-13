@@ -10,7 +10,7 @@ dependencies {
     compile(kotlin("stdlib-js"))
     compile("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
 
-    compile("com.github.juggernaut0.kui:kui:0.9.0")
+    compile("com.github.juggernaut0.kui:kui:0.10.0")
 
     compile("dev.twarner.auth:auth-ui:1-SNAPSHOT")
 }
