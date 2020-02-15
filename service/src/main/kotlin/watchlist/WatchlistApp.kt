@@ -36,6 +36,7 @@ class WatchlistApp @Inject constructor(
                 token(httpClient = authClient)
             }
             routing {
+                registerRoutes(apiHandler)
                 route("watchlist") {
                     staticBasePackage = "static"
                     resources()
@@ -45,7 +46,6 @@ class WatchlistApp @Inject constructor(
                         defaultResource("index.html")
                     }*/
                 }
-                registerRoutes(apiHandler)
             }
         }.start(wait = true)
     }

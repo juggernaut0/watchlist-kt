@@ -24,7 +24,6 @@ object WatchlistApp : Component() {
 
     init {
         window.onpopstate = { e ->
-            console.log(e)
             if (e.state == null) { // going forward
                 i++
             } else {

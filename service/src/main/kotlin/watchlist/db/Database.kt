@@ -12,8 +12,10 @@ import org.jooq.exception.DataAccessException
 import org.jooq.impl.DSL
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.sql.DataSource
 
+@Singleton
 class Database @Inject constructor(private val dataSource: DataSource) {
     suspend fun <T> transaction(block: suspend CoroutineScope.(DSLContext) -> T): T {
         return try {

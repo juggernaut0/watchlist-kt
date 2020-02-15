@@ -6,5 +6,6 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'build/webpack')
     },
-    mode: 'development'
+    mode: 'development',
+    devtool: 'eval-source-map'
 };
