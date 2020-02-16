@@ -3,9 +3,9 @@ plugins {
     id("com.github.node-gradle.node") version "2.2.1"
 }
 
-version = "1.0-SNAPSHOT"
-
 subprojects {
+    version = "1-SNAPSHOT"
+
     repositories {
         mavenCentral()
         maven("https://kotlin.bintray.com/kotlinx")

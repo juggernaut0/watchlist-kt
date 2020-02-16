@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -6,6 +8,7 @@ plugins {
     application
     id("nu.studer.jooq").version("4.0")
     kotlin("kapt")
+    id("com.bmuschko.docker-remote-api") version "6.1.3"
 }
 
 dependencies {
@@ -45,26 +48,52 @@ apply {
     from("jooq.gradle")
 }
 tasks {
-    withType<KotlinCompile>().forEach {
-        it.kotlinOptions.jvmTarget = "1.8"
-        it.dependsOn("generatePostgresJooqSchemaSource")
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+        dependsOn("generatePostgresJooqSchemaSource")
     }
 
     val copyWeb by registering(Copy::class) {
-        if (System.getenv("RELEASE") != null) {
-            dependsOn(":web:webpackMin")
-        } else {
+        if (version.toString().endsWith("SNAPSHOT")) {
             dependsOn(":web:webpack")
+        } else {
+            dependsOn(":web:webpackMin")
         }
         group = "build"
         from("${project(":web").buildDir}/webpack")
         into("$buildDir/resources/main/static/js")
     }
 
-    getByName("classes").dependsOn(copyWeb)
+    classes {
+        dependsOn(copyWeb)
+    }
 
-    val run by getting(JavaExec::class) {
+    run.invoke {
         systemProperty("config.file", "local.conf")
+    }
+
+    val copyDist by registering(Copy::class) {
+        dependsOn(distTar)
+        from(distTar.flatMap { it.archiveFile })
+        into("$buildDir/docker")
+    }
+
+    val dockerfile by registering(Dockerfile::class) {
+        dependsOn(copyDist)
+
+        from("openjdk:11-jre-slim")
+        addFile(distTar.flatMap { it.archiveFileName }.map { Dockerfile.File(it, "/app/") })
+        defaultCommand(distTar.flatMap { it.archiveFile }.map { it.asFile.nameWithoutExtension }.map { listOf("/app/$it/bin/${project.name}") })
+    }
+
+    val dockerBuild by registering(DockerBuildImage::class) {
+        dependsOn(dockerfile)
+
+        if (version.toString().endsWith("SNAPSHOT")) {
+            images.add("${rootProject.name}:SNAPSHOT")
+        } else {
+            images.add("juggernaut0/${rootProject.name}:$version")
+        }
     }
 }
 
