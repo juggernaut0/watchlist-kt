@@ -1,12 +1,10 @@
 {
-  "scripts": {
-    "start": "electron build/dist"
-  },
   "jest": {
     "testRegex": "_test\\.js$"
   },
   "devDependencies": {
-    "jest": "^24.3.0",
-    "electron": "^5.0.1"
+    "jest": "^24.9.0",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   }
 }
