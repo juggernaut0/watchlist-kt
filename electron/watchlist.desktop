@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Watchlist
+Comment=Track and rate media
+Exec=watchlist
+Terminal=false
+Type=Application
+StartupNotify=true
