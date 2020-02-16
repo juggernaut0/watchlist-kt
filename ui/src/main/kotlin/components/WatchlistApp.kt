@@ -24,10 +24,10 @@ object WatchlistApp : Component() {
 
     init {
         window.onpopstate = { e ->
-            if (e.state == null) { // going forward
-                i++
-            } else {
+            if (e.state != null) {
                 i = e.state as Int
+            } else if (i < history.lastIndex) { // going forward
+                i++
             }
         }
     }

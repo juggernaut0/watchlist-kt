@@ -150,6 +150,7 @@ textarea.watchlist-input {
 
 button.watchlist-score-btn {
     margin-top: 1rem;
+    padding: 0;
 }
 
 .watchlist-score-btn-muted {

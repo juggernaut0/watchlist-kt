@@ -4,8 +4,8 @@ import auth.ValidatedToken
 import io.ktor.auth.authenticate
 import io.ktor.http.HttpStatusCode
 import io.ktor.routing.Route
-import juggernaut0.multiplatform.ktor.WebApplicationException
-import juggernaut0.multiplatform.ktor.handleApi
+import multiplatform.ktor.WebApplicationException
+import multiplatform.ktor.handleApi
 import kotlinx.coroutines.future.await
 import kotlinx.serialization.json.Json
 import org.jooq.JSONB

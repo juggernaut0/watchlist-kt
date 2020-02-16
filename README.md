@@ -8,13 +8,12 @@
 ## Electron
 
 * Use kotlin DCE to remove unneeded packages?
+* Add sign-in & cloud save
 
 ## Service
 
-* MVP: Implement server-side saving
-    * Store everything in a big jsonb
-    * when signing in, if local data is not empty and server-side data exists and does not match local data (check 
-    timestamp), prompt user if they would like to keep local data or server data.
+* When signing in, if local data is not empty and server-side data exists and does not match local data (check 
+timestamp), prompt user if they would like to keep local data or server data.
 
 ## UI
 
@@ -24,6 +23,7 @@
 * Colors for score
 * Filters
 * Implement New Category button
+* JSON data import/export
 * Dark mode
 * Autocomplete/suggestions for tags
 * Score pips look bad between 1200 and 1250 px screen width

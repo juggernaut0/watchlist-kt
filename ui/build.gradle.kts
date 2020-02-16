@@ -9,10 +9,11 @@ dependencies {
 
     compile(kotlin("stdlib-js"))
     compile("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
+    compile("io.ktor:ktor-client-js:1.2.6")
 
     compile("com.github.juggernaut0.kui:kui:0.10.0")
 
-    compile("dev.twarner.auth:auth-ui:1-SNAPSHOT")
+    compile("dev.twarner.auth:auth-ui:1")
 }
 
 tasks.withType<Kotlin2JsCompile>().forEach {

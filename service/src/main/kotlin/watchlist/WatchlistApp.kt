@@ -13,7 +13,7 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.jetty.Jetty
-import juggernaut0.multiplatform.ktor.installWebApplicationExceptionHandler
+import multiplatform.ktor.installWebApplicationExceptionHandler
 import org.slf4j.event.Level
 import watchlist.handlers.ApiHandler
 import watchlist.handlers.registerRoutes

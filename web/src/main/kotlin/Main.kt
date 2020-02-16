@@ -2,7 +2,6 @@ import auth.AuthPanel
 import auth.api.v1.authModule
 import auth.getToken
 import components.WatchlistApp
-import components.WatchlistMainView
 import components.WebWrapper
 import components.applyWatchlistStyles
 import io.ktor.client.HttpClient
@@ -10,9 +9,9 @@ import io.ktor.client.engine.js.Js
 import io.ktor.client.features.defaultRequest
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
-import juggernaut0.multiplatform.ktor.JsonSerialization
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import multiplatform.ktor.JsonSerialization
 import services.CompositeDataRepository
 import services.HttpDataRepository
 import services.LocalStorageDataRepository
@@ -38,9 +37,9 @@ fun main() {
         }
     }
     val dataRepo = CompositeDataRepository(
-        LocalStorageDataRepository(json),
-        HttpDataRepository(httpClient)
+        HttpDataRepository(httpClient),
+        LocalStorageDataRepository(json)
     )
-    WatchlistService(dataRepo).init { WatchlistApp.state = WebWrapper(it, httpClient) }
+    WatchlistService(dataRepo).init { WatchlistApp.state = WebWrapper(it) }
     kui.mountComponent(document.body!!, WatchlistApp)
 }

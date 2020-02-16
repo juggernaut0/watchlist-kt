@@ -1,9 +1,9 @@
 package watchlist.api.v1
 
-import juggernaut0.multiplatform.api.ApiRoute
-import juggernaut0.multiplatform.api.Method.GET
-import juggernaut0.multiplatform.api.Method.PUT
-import juggernaut0.multiplatform.api.pathOf
+import multiplatform.api.ApiRoute
+import multiplatform.api.Method.GET
+import multiplatform.api.Method.PUT
+import multiplatform.api.pathOf
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.internal.UnitSerializer
 import kotlinx.serialization.internal.nullable

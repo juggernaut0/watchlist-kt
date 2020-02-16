@@ -2,14 +2,13 @@ package components
 
 import auth.AuthPanel
 import auth.isSignedIn
-import io.ktor.client.HttpClient
 import kui.Component
 import kui.Props
 import kui.classes
 import services.WatchlistService
 import kotlin.browser.window
 
-class WebWrapper(private val service: WatchlistService, private val httpClient: HttpClient) : Component() {
+class WebWrapper(private val service: WatchlistService) : Component() {
     private fun signOut() {
         auth.signOut()
         window.localStorage.removeItem("watchlist-data")
@@ -23,7 +22,7 @@ class WebWrapper(private val service: WatchlistService, private val httpClient: 
                 if (isSignedIn()) {
                     a(Props(click = { signOut() })) { +"Sign out" }
                 } else {
-                    a(Props(click = { WatchlistApp.state = AuthPanel(httpClient) })) { +"Sign in" }
+                    a(Props(click = { WatchlistApp.state = AuthPanel() })) { +"Sign in" }
                 }
             }
             component(WatchlistMainView(service))

@@ -9,9 +9,9 @@ plugins {
 }
 
 dependencies {
-    compile(project(":common"))
-    compile(project(":ui"))
-    compile(kotlin("stdlib-js"))
+    implementation(project(":common"))
+    implementation(project(":ui"))
+    implementation(kotlin("stdlib-js"))
 }
 
 tasks.withType<Kotlin2JsCompile>().forEach {
@@ -25,7 +25,7 @@ tasks {
         dependsOn("runDceKotlin")
 
         from(getByName<KotlinJsDce>("runDceKotlin").destinationDir)
-        include("*.js")
+        include("*.js", "*.js.map")
         into("$buildDir/node_modules")
     }
 

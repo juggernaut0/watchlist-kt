@@ -32,7 +32,7 @@ dependencies {
 
     implementation("io.github.config4k:config4k:0.4.1")
 
-    implementation("dev.twarner.auth:auth-common:1-SNAPSHOT")
+    implementation("dev.twarner.auth:auth-common:1")
 
     testImplementation(kotlin("test-junit"))
 }

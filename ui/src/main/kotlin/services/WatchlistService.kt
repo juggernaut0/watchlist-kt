@@ -13,6 +13,10 @@ class WatchlistService(private val dataRepository: DataRepository) {
         GlobalScope.launch {
             dataRepository.load()?.toMutable()?.let { watchlist = it }
             finished(this@WatchlistService)
+            while (true) {
+                delay(5*60*1000)
+                save()
+            }
         }
         return this
     }

@@ -1,6 +1,5 @@
 package services
 
-import maxBy
 import watchlist.api.v1.Watchlist
 
 interface DataRepository {
@@ -15,12 +14,6 @@ class CompositeDataRepository(private val first: DataRepository, private val sec
     }
 
     override suspend fun load(): Watchlist? {
-        val a = first.load()
-        val b = second.load()
-        return if (a != null && b != null) {
-            maxBy(a, b) { it.timestamp }
-        } else {
-            a ?: b
-        }
+        return first.load() ?: second.load()
     }
 }
