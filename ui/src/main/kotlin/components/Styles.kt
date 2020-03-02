@@ -12,7 +12,9 @@ private const val col10 = "${1000.0/12}%"
 
 private const val borderGray = "#ccc"
 private const val btnColor = "#2a4"
+private const val btnSecondaryColor = "#999"
 private const val btnHoverColor = "#183"
+private const val btnSecondaryHoverColor = "#666"
 private const val btnDangerColor = "#d33"
 private const val btnDangerHoverColor = "#c22"
 
@@ -354,9 +356,84 @@ private const val tagInputCss = """
 }
 """
 
+private const val modalCss = """
+.modal-background {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background-color: white;
+    font-family: "Segoe UI",Roboto,sans-serif;
+    color: #222;
+    padding: 1rem;
+    border: 1px solid $borderGray;
+    border-radius: 0.25rem;
+    width: 80%;
+}
+
+.modal-show {
+    display: flex;
+}
+
+.modal-btns {
+    display: flex;
+    margin: 0 -0.25rem;
+}
+
+.modal-btn {
+    flex-basis: $col6;
+    flex-grow: 1;
+    height: 3rem;
+    color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    margin: 0.25rem;
+    font-size: 1rem;
+}
+
+.modal-btn-ok {
+    background-color: $btnColor;
+}
+
+.modal-btn-ok:hover {
+    background-color: $btnHoverColor;
+}
+
+.modal-btn-danger {
+    background-color: $btnDangerColor;
+}
+
+.modal-btn-danger:hover {
+    background-color: $btnDangerHoverColor;
+}
+
+.modal-btn-cancel {
+    background-color: $btnSecondaryColor;
+}
+
+.modal-btn-cancel:hover {
+    background-color: $btnSecondaryHoverColor;
+}
+
+@media only screen and (min-width: 600px) {
+    .modal-box {
+        width: 500px;
+    }
+}
+"""
+
 fun applyWatchlistStyles() {
     appendCss(css)
     appendCss(tagInputCss)
+    appendCss(modalCss)
 }
 
 private fun appendCss(css: String) {

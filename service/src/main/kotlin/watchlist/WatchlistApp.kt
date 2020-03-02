@@ -25,7 +25,7 @@ class WatchlistApp @Inject constructor(
         @Named("authClient") private val authClient: HttpClient
 ) {
     fun start() {
-        embeddedServer(Jetty, 9000) {
+        embeddedServer(Jetty, 9000) { // TODO port from configuration
             install(CallLogging) {
                 level = Level.INFO
             }

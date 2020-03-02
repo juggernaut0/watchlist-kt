@@ -17,7 +17,6 @@ timestamp), prompt user if they would like to keep local data or server data.
 
 ## UI
 
-* Tags input on blur should add tag
 * Sorting by column
 * Colors for status
 * Colors for score

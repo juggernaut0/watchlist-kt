@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter
 version = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 
 plugins {
-    id("kotlin2js")
+    id("kotlin2js") // kotlin("js") plugin does not support multiple source sets
     id("com.github.node-gradle.node")
 }
 
@@ -22,12 +22,9 @@ dependencies {
 }
 
 tasks {
-    withType<Kotlin2JsCompile>().forEach {
-        it.kotlinOptions.moduleKind = "commonjs"
+    withType<Kotlin2JsCompile> {
+        kotlinOptions.moduleKind = "commonjs"
     }
-
-    // either need this or 'nodeIntegration = true' on BrowserWindow
-    //getByName<Kotlin2JsCompile>("compileRendererKotlin2Js").kotlinOptions.moduleKind = "plain"
 
     val copyStatic by registering(Copy::class) {
         group = "build"
@@ -36,7 +33,6 @@ tasks {
     }
 
     val populateNodeModules by registering(Copy::class) {
-        // TODO auto-detect configurations
         configurations.getByName("rendererRuntimeClasspath").forEach { file ->
             from(zipTree(file.absolutePath)) {
                 includeEmptyDirs = false
@@ -49,9 +45,9 @@ tasks {
     }
 
     val assembleScripts by registering(Copy::class) {
-        dependsOn("classes", "rendererClasses")
-        from(getByName<Kotlin2JsCompile>("compileKotlin2Js").destinationDir)
-        from(getByName<Kotlin2JsCompile>("compileRendererKotlin2Js").destinationDir)
+        dependsOn(mainClasses, "rendererClasses")
+        from(compileKotlin2Js.map { it.destinationDir })
+        from(named<Kotlin2JsCompile>("compileRendererKotlin2Js").map { it.destinationDir })
         include("**/*.js")
         includeEmptyDirs = false
         into("$buildDir/dist")
@@ -70,15 +66,18 @@ tasks {
         }
     }
 
-    getByName("assemble").dependsOn(copyStatic, assembleScripts, populateNodeModules, generatePackageJson)
+    assemble {
+        dependsOn(copyStatic, assembleScripts, populateNodeModules, generatePackageJson)
+    }
 
     val run by registering(NpmTask::class) {
-        dependsOn("assemble")
+        dependsOn(assemble)
         setArgs(listOf("run", "start"))
+        setEnvironment(mapOf("WATCHLIST_DATA_DIR" to "$buildDir/data"))
     }
 
     val `package` by registering(NpmTask::class) {
-        dependsOn("assemble")
+        dependsOn(assemble)
         setArgs(listOf("run", "package"))
     }
 }

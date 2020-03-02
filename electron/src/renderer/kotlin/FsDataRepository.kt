@@ -3,8 +3,8 @@ import services.DataRepository
 import watchlist.api.v1.Watchlist
 import kotlin.coroutines.suspendCoroutine
 
-class FsDataRepository(private val json: Json, relPath: String = ".watchlist") : DataRepository {
-    private val filepath = path.join(os.homedir(), relPath, "data.json")
+class FsDataRepository(private val json: Json, dir: String) : DataRepository {
+    private val filepath = path.join(dir, "data.json")
 
     override suspend fun save(watchlist: Watchlist) {
         val data = json.stringify(Watchlist.serializer(), watchlist)

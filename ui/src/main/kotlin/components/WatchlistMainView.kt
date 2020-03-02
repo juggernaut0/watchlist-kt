@@ -25,9 +25,11 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
     }
 
     private fun removeItem(item: MutableWatchlistItem) {
-        selectedCategory.items.remove(item)
-        service.save()
-        render()
+        Modal.show("Remove Item", "Are you sure you want to remove '${item.name}'?", danger = true) {
+            selectedCategory.items.remove(item)
+            service.save()
+            render()
+        }
     }
 
     override fun render() {
