@@ -3,15 +3,24 @@ package components
 import kui.Component
 import kui.Props
 import kui.classes
-import kui.renderOnSet
 import services.MutableCategory
 import services.MutableWatchlistItem
+import services.Status
 import services.WatchlistService
 import watchlist.api.v1.WatchlistStatus
+import kotlin.math.abs
 
 class WatchlistMainView(private val service: WatchlistService) : Component() {
-    private var selectedCategory: MutableCategory by renderOnSet(service.watchlist.categories.first())
+    private var selectedCategory: MutableCategory = service.watchlist.categories.first()
     private var newItem: MutableWatchlistItem = resetItem()
+
+    private var currentSort: Int = 0
+
+    private fun changeCategory(category: MutableCategory) {
+        selectedCategory = category
+        currentSort = 0
+        render()
+    }
 
     private fun resetItem(): MutableWatchlistItem {
         return MutableWatchlistItem("", null, WatchlistStatus.TO_WATCH, mutableListOf(), "")
@@ -32,6 +41,25 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
         }
     }
 
+    private fun <R : Comparable<R>> setSort(col: Int, by: (MutableWatchlistItem) -> R) {
+        if (abs(currentSort) == col) {
+            currentSort = -currentSort
+            selectedCategory.items.reverse()
+        } else {
+            currentSort = col
+            selectedCategory.items.sortBy(by)
+        }
+        render()
+    }
+
+    private fun sortLabel(str: String, col: Int): String {
+        return when (currentSort) {
+            col -> "$str ▲"
+            -col -> "$str ▼"
+            else -> str
+        }
+    }
+
     override fun render() {
         markup().div(classes("watchlist-container")) {
             div(classes("watchlist-category-list")) {
@@ -41,7 +69,7 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
                             "watchlist-category-btn",
                             if (category == selectedCategory) "watchlist-category-btn-active" else null
                         ),
-                        click = { selectedCategory = category }
+                        click = { changeCategory(category) }
                     )) {
                         +category.name
                     }
@@ -56,10 +84,22 @@ class WatchlistMainView(private val service: WatchlistService) : Component() {
                 h2 { +selectedCategory.name }
                 div(classes("watchlist-list-table-row-box")) {
                     div(classes("watchlist-list-table-header")) {
-                        span(classes("watchlist-list-table-name")) { +"Name" }
-                        span(classes("watchlist-list-table-status")) { +"Status" }
-                        span(classes("watchlist-list-table-score")) { +"Score" }
-                        span(classes("watchlist-list-table-tags")) { +"Tags" }
+                        span(Props(
+                            classes = listOf("watchlist-list-table-name"),
+                            click = { setSort(1) { it.name } }
+                        )) { +sortLabel("Name", 1) }
+                        span(Props(
+                            classes = listOf("watchlist-list-table-status"),
+                            click = { setSort(2) { Status.of(it.status)!! } }
+                        )) { +sortLabel("Status", 2) }
+                        span(Props(
+                            classes = listOf("watchlist-list-table-score"),
+                            click = { setSort(3) { -(it.score ?: 0) } }
+                        )) { +sortLabel("Score", 3) }
+                        span(Props(
+                            classes = listOf("watchlist-list-table-tags"),
+                            click = { setSort(4) { it.tags.sorted().joinToString(separator = " ") } }
+                        )) { +sortLabel("Tags", 4) }
                     }
                 }
                 div(classes("watchlist-list-table")) {
