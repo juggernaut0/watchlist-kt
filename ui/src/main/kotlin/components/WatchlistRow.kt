@@ -24,7 +24,7 @@ class WatchlistRow(
                         for (i in 1..5) {
                             val classes = listOfNotNull(
                                 "watchlist-score-btn",
-                                "watchlist-score-btn-active".takeIf { i <= score })
+                                "watchlist-score-btn-$score".takeIf { i <= score })
                             span(Props(classes = classes)) {}
                         }
                     }

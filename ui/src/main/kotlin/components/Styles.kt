@@ -163,6 +163,22 @@ button.watchlist-score-btn {
     background-color: #222;
 }
 
+.watchlist-score-btn-1 {
+    background-color: hsl(0, 75%, 60%);
+}
+.watchlist-score-btn-2 {
+    background-color: hsl(30, 75%, 60%);
+}
+.watchlist-score-btn-3 {
+    background-color: hsl(60, 75%, 60%);
+}
+.watchlist-score-btn-4 {
+    background-color: hsl(90, 75%, 60%);
+}
+.watchlist-score-btn-5 {
+    background-color: hsl(120, 75%, 60%);
+}
+
 .watchlist-list-table-row-box {
     border-bottom: 1px solid $borderGray;
 }
