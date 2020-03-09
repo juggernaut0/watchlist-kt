@@ -4,6 +4,7 @@ import kui.Component
 import kui.Props
 import kui.classes
 import services.MutableWatchlistItem
+import services.Status
 import services.WatchlistService
 import toDisplay
 
@@ -18,7 +19,8 @@ class WatchlistRow(
         markup().div(classes("watchlist-list-table-row-box")) {
             div(Props(classes = listOf("watchlist-list-table-row"), click = { collapse.toggle() })) {
                 span(classes("watchlist-list-table-name")) { +item.name }
-                span(classes("watchlist-list-table-status")) { +item.status.toDisplay() }
+                val status = item.status
+                span(classes("watchlist-list-table-status", "watchlist-list-table-status-${statusClasses[status]}")) { +status.toDisplay() }
                 span(classes("watchlist-list-table-score", "watchlist-list-table-score-btns")) {
                     item.score?.let { score ->
                         for (i in 1..5) {
@@ -43,5 +45,15 @@ class WatchlistRow(
                 }
             }
         }
+    }
+
+    companion object {
+        private val statusClasses = mapOf(
+            Status.TO_WATCH.apiValue to "to-watch",
+            Status.IN_PROGRESS.apiValue to "in-progress",
+            Status.ON_HOLD.apiValue to "on-hold",
+            Status.FINISHED.apiValue to "finished",
+            Status.DROPPED.apiValue to "dropped"
+        )
     }
 }

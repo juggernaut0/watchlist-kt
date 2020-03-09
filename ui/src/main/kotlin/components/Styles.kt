@@ -211,6 +211,22 @@ button.watchlist-score-btn {
     flex: 0 0 $col4;
 }
 
+.watchlist-list-table-status-to-watch {
+    color: hsl(210, 60%, 50%);
+}
+.watchlist-list-table-status-in-progress {
+    color: hsl(270, 60%, 50%);
+}
+.watchlist-list-table-status-on-hold {
+    color: hsl(60, 60%, 50%);
+}
+.watchlist-list-table-status-finished {
+    color: hsl(120, 60%, 50%);
+}
+.watchlist-list-table-status-dropped {
+    color: hsl(0, 60%, 50%);
+}
+
 .watchlist-list-table-score {
     display: none;
 }

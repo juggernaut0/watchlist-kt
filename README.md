@@ -17,7 +17,6 @@ timestamp), prompt user if they would like to keep local data or server data.
 
 ## UI
 
-* Colors for status
 * Filters
 * Implement New Category button
 * JSON data import/export
