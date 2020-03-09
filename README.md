@@ -17,9 +17,6 @@ timestamp), prompt user if they would like to keep local data or server data.
 
 ## UI
 
-* Sorting by column
-* Colors for status
-* Colors for score
 * Filters
 * Implement New Category button
 * JSON data import/export

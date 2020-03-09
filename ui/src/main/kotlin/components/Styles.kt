@@ -163,6 +163,22 @@ button.watchlist-score-btn {
     background-color: #222;
 }
 
+.watchlist-score-btn-1 {
+    background-color: hsl(0, 75%, 60%);
+}
+.watchlist-score-btn-2 {
+    background-color: hsl(30, 75%, 60%);
+}
+.watchlist-score-btn-3 {
+    background-color: hsl(60, 75%, 60%);
+}
+.watchlist-score-btn-4 {
+    background-color: hsl(90, 75%, 60%);
+}
+.watchlist-score-btn-5 {
+    background-color: hsl(120, 75%, 60%);
+}
+
 .watchlist-list-table-row-box {
     border-bottom: 1px solid $borderGray;
 }
@@ -193,6 +209,22 @@ button.watchlist-score-btn {
 
 .watchlist-list-table-status {
     flex: 0 0 $col4;
+}
+
+.watchlist-list-table-status-to-watch {
+    color: hsl(210, 60%, 50%);
+}
+.watchlist-list-table-status-in-progress {
+    color: hsl(270, 60%, 50%);
+}
+.watchlist-list-table-status-on-hold {
+    color: hsl(60, 60%, 50%);
+}
+.watchlist-list-table-status-finished {
+    color: hsl(120, 60%, 50%);
+}
+.watchlist-list-table-status-dropped {
+    color: hsl(0, 60%, 50%);
 }
 
 .watchlist-list-table-score {
