@@ -4,7 +4,7 @@
     "package": "electron-packager build/dist --out=build/package --overwrite"
   },
   "devDependencies": {
-    "electron": "7.1",
+    "electron": "11.5",
     "electron-packager": "14.2"
   }
 }
