@@ -7,7 +7,7 @@ pluginManagement {
     }
 
     plugins {
-        val twarnerPlugins = "0.3.0"
+        val twarnerPlugins = "0.3.1"
         id("dev.twarner.common") version twarnerPlugins
         id("dev.twarner.docker") version twarnerPlugins
         id("dev.twarner.kotlin") version twarnerPlugins
@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            from("dev.twarner:catalog:0.3.0")
+            from("dev.twarner:catalog:0.3.1")
         }
     }
 }
