@@ -3,7 +3,7 @@ package components
 import kui.Component
 import kui.componentOf
 import kui.renderOnSet
-import kotlin.browser.window
+import kotlinx.browser.window
 
 object WatchlistApp : Component() {
     var state: Component

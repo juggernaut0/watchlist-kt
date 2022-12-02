@@ -1,83 +1,79 @@
-import com.moowork.gradle.node.npm.NpmTask
+import dev.twarner.gradle.YarnTask
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
-version = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
 
 plugins {
-    id("kotlin2js") // kotlin("js") plugin does not support multiple source sets
-    id("com.github.node-gradle.node")
+    kotlin("js")
+    id("dev.twarner.common")
+    id("dev.twarner.kotlin")
 }
 
-sourceSets {
-    val renderer by creating { }
+kotlin {
+    js {
+        nodejs()
+    }
 }
+
+// Required to properly install electron
+yarn.ignoreScripts = false
 
 dependencies {
-    implementation(kotlin("stdlib-js"))
 
-    "rendererImplementation"(kotlin("stdlib-js"))
-    "rendererImplementation"(project(":ui"))
+    implementation(devNpm("electron", "21.3.1"))
+    implementation(devNpm("electron-packager", "17.1.1"))
+
+    implementation(libs.asyncLite)
 }
 
 tasks {
-    withType<Kotlin2JsCompile> {
+    withType<Kotlin2JsCompile>().configureEach {
         kotlinOptions.moduleKind = "commonjs"
     }
 
-    val copyStatic by registering(Copy::class) {
-        group = "build"
-        from("static")
-        into("$buildDir/dist")
+    val unpackJar by registering(Copy::class) {
+        from(zipTree(named<Jar>("jsJar").flatMap { it.archiveFile }))
+        into(layout.buildDirectory.dir("electron"))
+    }
+
+    val copyRenderer by registering(Copy::class) {
+        val browserProductionWebpack = project(":electron:renderer").tasks.named<KotlinWebpack>("browserProductionWebpack")
+        from(browserProductionWebpack.map { it.destinationDirectory })
+        into(unpackJar.map { it.destinationDir })
+    }
+
+    val electronYarnInstall by registering(YarnTask::class) {
+        dependsOn(copyRenderer)
+        dir.set(layout.dir(unpackJar.map { it.destinationDir }))
+        arguments.set(listOf("install"))
     }
 
     val populateNodeModules by registering(Copy::class) {
-        configurations.getByName("rendererRuntimeClasspath").forEach { file ->
+        dependsOn(unpackJar, electronYarnInstall)
+        configurations.getByName("runtimeClasspath").forEach { file ->
             from(zipTree(file.absolutePath)) {
                 includeEmptyDirs = false
                 include { it.path.endsWith(".js") }
+                exclude { it.path.endsWith(".meta.js") }
             }
         }
         include("**/*.js")
+        exclude("**/watchlist-electron.js")
         includeEmptyDirs = false
-        into("$buildDir/dist/node_modules")
+        into(unpackJar.map { it.destinationDir.resolve("node_modules") })
     }
 
-    val assembleScripts by registering(Copy::class) {
-        dependsOn(mainClasses, "rendererClasses")
-        from(compileKotlin2Js.map { it.destinationDir })
-        from(named<Kotlin2JsCompile>("compileRendererKotlin2Js").map { it.destinationDir })
-        include("**/*.js")
-        includeEmptyDirs = false
-        into("$buildDir/dist")
+    val runElectron by registering(YarnTask::class) {
+        dependsOn(populateNodeModules)
+        dir.set(layout.dir(unpackJar.map { it.destinationDir }))
+        arguments.set(listOf("run", "electron", "."))
+        environment.putAll(mapOf("WATCHLIST_DATA_DIR" to "$buildDir/data"))
     }
 
-    val generatePackageJson by registering {
-        outputs.files("$buildDir/dist/package.json")
-        doLast {
-            File("$buildDir/dist/package.json").writeText("""
-                {
-                    "name": "watchlist",
-                    "version": "$version", 
-                    "main": "electron.js"
-                }
-            """.trimIndent() + "\n")
-        }
-    }
-
-    assemble {
-        dependsOn(copyStatic, assembleScripts, populateNodeModules, generatePackageJson)
-    }
-
-    val run by registering(NpmTask::class) {
-        dependsOn(assemble)
-        setArgs(listOf("run", "start"))
-        setEnvironment(mapOf("WATCHLIST_DATA_DIR" to "$buildDir/data"))
-    }
-
-    val `package` by registering(NpmTask::class) {
-        dependsOn(assemble)
-        setArgs(listOf("run", "package"))
+    val packageElectron by registering(YarnTask::class) {
+        dependsOn(populateNodeModules)
+        dir.set(layout.dir(unpackJar.map { it.destinationDir }))
+        arguments.set(listOf("run", "electron-packager", ".", "--out=$buildDir/package", "--overwrite"/*, "--no-prune"*/))
+        outputs.dir(buildDir.resolve("package"))
     }
 }

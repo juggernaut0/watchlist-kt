@@ -2,21 +2,27 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
+    id("dev.twarner.common")
 }
 
 dependencies {
-    compile(project(":common"))
+    api(project(":common"))
 
-    compile(kotlin("stdlib-js"))
-    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
-    compile("io.ktor:ktor-client-js:1.2.6")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.6.4")
+    api(platform(libs.ktor.bom))
+    api(libs.ktor.client.js)
 
-    compile("com.github.juggernaut0.kui:kui:0.10.1")
+    api(libs.kui)
 
-    compile("dev.twarner.auth:auth-ui:1")
+    api(libs.twarner.auth.ui)
+}
+
+kotlin {
+    js {
+        browser()
+    }
 }
 
 tasks.withType<Kotlin2JsCompile>().forEach {
-    //it.kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
     it.kotlinOptions.moduleKind = "commonjs"
 }

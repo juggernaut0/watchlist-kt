@@ -3,13 +3,12 @@ plugins {
     id("dev.twarner.common")
 }
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":ui"))
-}
-
 kotlin {
     js {
         browser()
     }
+}
+
+dependencies {
+    implementation(project(":ui"))
 }

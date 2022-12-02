@@ -6,9 +6,8 @@ import dagger.Module
 import dagger.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
-import io.ktor.client.features.defaultRequest
+import io.ktor.client.plugins.defaultRequest
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import watchlist.WatchlistConfig
 import javax.inject.Named
 import javax.inject.Singleton
@@ -43,6 +42,6 @@ class WatchlistModule(private val config: WatchlistConfig) {
 
     @Provides
     fun json(): Json {
-        return Json(JsonConfiguration.Stable.copy(strictMode = false))
+        return Json { ignoreUnknownKeys = true }
     }
 }

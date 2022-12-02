@@ -1,18 +1,15 @@
 package watchlist
 
 import auth.token
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.client.HttpClient
-import io.ktor.features.CallLogging
-import io.ktor.features.StatusPages
-import io.ktor.http.content.defaultResource
-import io.ktor.http.content.resources
-import io.ktor.http.content.staticBasePackage
-import io.ktor.routing.route
-import io.ktor.routing.routing
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.jetty.Jetty
+import io.ktor.client.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.engine.*
+import io.ktor.server.http.content.*
+import io.ktor.server.jetty.*
+import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.routing.*
 import multiplatform.ktor.installWebApplicationExceptionHandler
 import org.slf4j.event.Level
 import watchlist.handlers.ApiHandler

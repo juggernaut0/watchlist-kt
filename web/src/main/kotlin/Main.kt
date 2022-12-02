@@ -4,25 +4,25 @@ import auth.getToken
 import components.WatchlistApp
 import components.WebWrapper
 import components.applyWatchlistStyles
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.js.Js
-import io.ktor.client.features.defaultRequest
-import io.ktor.http.HttpHeaders
-import io.ktor.http.URLProtocol
+import io.ktor.client.*
+import io.ktor.client.engine.js.*
+import io.ktor.client.plugins.*
+import io.ktor.http.*
+import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import multiplatform.ktor.JsonSerialization
+import multiplatform.ktor.JsonSerializationClientPlugin
 import services.CompositeDataRepository
 import services.HttpDataRepository
 import services.LocalStorageDataRepository
 import services.WatchlistService
-import kotlin.browser.document
-import kotlin.browser.window
 
 fun main() {
     AuthPanel.Styles.apply()
     applyWatchlistStyles()
-    val json = Json(JsonConfiguration.Stable, context = authModule)
+    val json = Json {
+        serializersModule = authModule
+    }
     val httpClient = HttpClient(Js) {
         defaultRequest {
             url.protocol = URLProtocol.createOrDefault(window.location.protocol.trim(':'))
@@ -32,7 +32,7 @@ fun main() {
             }
             getToken()?.let { token -> headers.append(HttpHeaders.Authorization, "Bearer $token") }
         }
-        install(JsonSerialization) {
+        install(JsonSerializationClientPlugin) {
             this.json = json
         }
     }

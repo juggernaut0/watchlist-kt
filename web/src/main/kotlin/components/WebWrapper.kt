@@ -6,7 +6,7 @@ import kui.Component
 import kui.Props
 import kui.classes
 import services.WatchlistService
-import kotlin.browser.window
+import kotlinx.browser.window
 
 class WebWrapper(private val service: WatchlistService) : Component() {
     private fun signOut() {

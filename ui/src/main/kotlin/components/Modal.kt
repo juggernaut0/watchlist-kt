@@ -3,7 +3,7 @@ package components
 import kui.Component
 import kui.Props
 import kui.classes
-import kotlin.browser.document
+import kotlinx.browser.document
 
 object Modal : Component() {
     private var showing = false

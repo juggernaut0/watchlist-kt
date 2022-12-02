@@ -1,13 +1,13 @@
 package watchlist.handlers
 
 import auth.ValidatedToken
-import io.ktor.auth.authenticate
-import io.ktor.http.HttpStatusCode
-import io.ktor.routing.Route
-import multiplatform.ktor.WebApplicationException
-import multiplatform.ktor.handleApi
+import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.routing.*
 import kotlinx.coroutines.future.await
 import kotlinx.serialization.json.Json
+import multiplatform.ktor.WebApplicationException
+import multiplatform.ktor.handleApi
 import org.jooq.JSONB
 import watchlist.api.v1.Watchlist
 import watchlist.api.v1.getListByName
@@ -78,12 +78,12 @@ class ApiHandler @Inject constructor(
 
     private fun readJson(version: Int, jsonb: JSONB): Watchlist {
         return when (version) {
-            1 -> json.parse(Watchlist.serializer(), jsonb.data())
+            1 -> json.decodeFromString(Watchlist.serializer(), jsonb.data())
             else -> throw IllegalStateException("Unrecognized watchlist version: $version")
         }
     }
 
     private fun writeJson(watchlist: Watchlist): Pair<Int, JSONB> {
-        return 1 to JSONB.valueOf(json.stringify(Watchlist.serializer(), watchlist))
+        return 1 to JSONB.valueOf(json.encodeToString(Watchlist.serializer(), watchlist))
     }
 }

@@ -1,49 +1,22 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-
 plugins {
     kotlin("jvm")
     application
-    id("com.bmuschko.docker-remote-api") version "6.1.3"
+    id("dev.twarner.common")
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.postgresql:postgresql:42.2.5")
-    implementation("org.flywaydb:flyway-core:6.2.3")
+    implementation(libs.postgresql)
+    implementation(libs.flyway.core)
 }
 
 application {
-    mainClassName = "MigrateKt"
+    mainClass.set("watchlist.MigrateKt")
 }
 
 tasks {
-    run.invoke {
+    (run) {
         args = listOf("postgres://watchlist:watchlist@localhost:6432/watchlist")
-    }
-
-    val copyDist by registering(Copy::class) {
-        dependsOn(distTar)
-        from(distTar.flatMap { it.archiveFile })
-        into("$buildDir/docker")
-    }
-
-    val dockerfile by registering(Dockerfile::class) {
-        dependsOn(copyDist)
-
-        from("openjdk:11-jre-slim")
-        addFile(distTar.flatMap { it.archiveFileName }.map { Dockerfile.File(it, "/app/") })
-        defaultCommand(distTar.flatMap { it.archiveFile }.map { it.asFile.nameWithoutExtension }.map { listOf("/app/$it/bin/${project.name}") })
-    }
-
-    val dockerBuild by registering(DockerBuildImage::class) {
-        dependsOn(dockerfile)
-
-        if (version.toString().endsWith("SNAPSHOT")) {
-            images.add("${rootProject.name}-dbmigrate:SNAPSHOT")
-        } else {
-            images.add("juggernaut0/${rootProject.name}-dbmigrate:$version")
-        }
     }
 }

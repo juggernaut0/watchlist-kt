@@ -1,7 +1,7 @@
 package components
 
 import org.w3c.dom.HTMLStyleElement
-import kotlin.browser.document
+import kotlinx.browser.document
 
 private const val col2 = "${200.0/12}%"
 private const val col3 = "${300.0/12}%"
